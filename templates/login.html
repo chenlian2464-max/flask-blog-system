@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>登录</h1>
+    <form method="POST">
+        <div style="margin: 10px 0;">
+            <label>邮箱：</label>
+            <input type="email" name="email" value="{{ email }}" required>
+        </div>
+        <div>
+            <label>密码：</label>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit">登录</button>
+    </form>
+{% endblock %}

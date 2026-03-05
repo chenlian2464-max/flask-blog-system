@@ -1,0 +1,43 @@
+# Python编译文件
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# 虚拟环境
+venv/
+env/
+ENV/
+.venv/
+env.bak/
+venv.bak/
+
+# 依赖和打包文件
+*.egg-info/
+dist/
+build/
+*.egg
+requirements.txt.bak
+
+# 环境变量和配置
+.env
+.local.env
+config.ini.bak
+
+# 日志和缓存
+logs/
+cache/
+*.log
+*.sqlite3
+
+# 编辑器配置
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store  # Mac系统特有文件
+
+# 操作系统临时文件
+tmp/
+temp/

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - Flask 博客{% endblock %}
+
+{% block content %}
+    <div class="post">
+        <h2 class="post-title">{{ post.title }}</h2>
+        <div class="post-meta">
+            作者：{{ post.author.username }} | 
+            发布时间：{{ post.created_at.strftime('%Y-%m-%d %H:%M') }} |
+            更新时间：{{ post.updated_at.strftime('%Y-%m-%d %H:%M') }} |
+            {% if post.category %}分类：{{ post.category.name }}{% else %}无分类{% endif %}
+        </div>
+        <div class="post-content">
+            {{ post.content|safe }}
+        </div>
+        
+        <!-- 操作按钮 -->
+        <div style="margin-top: 20px;">
+            <a href="{{ url_for('index') }}" class="btn">返回首页</a>
+            {% if current_user == post.author %}
+                <a href="{{ url_for('edit', post_id=post.id) }}" class="btn">编辑文章</a>
+                <a href="{{ url_for('delete', post_id=post.id) }}" class="btn btn-danger" onclick="return confirm('确定要删除吗？')">删除文章</a>
+            {% endif %}
+        </div>
+        
+        <!-- 评论区 -->
+        <div style="margin-top: 40px;">
+            <h3>评论区 ({{ comments|length }})</h3>
+            
+            <!-- 发表评论表单 -->
+            {% if current_user.is_authenticated %}
+                <form method="POST" style="margin-bottom: 20px;">
+                    <label for="comment">发表评论：</label>
+                    <textarea id="comment" name="comment" rows="3" required></textarea>
+                    <button type="submit">提交评论</button>
+                </form>
+            {% else %}
+                <p>请<a href="{{ url_for('login') }}">登录</a>后发表评论</p>
+            {% endif %}
+            
+            <!-- 显示所有评论 -->
+            {% if comments %}
+                {% for comment in comments %}
+                    <div class="comment">
+                        <div class="comment-meta">
+                            {{ comment.author.username }} · {{ comment.created_at.strftime('%Y-%m-%d %H:%M') }}
+                            {% if current_user == comment.author or current_user == post.author %}
+                                <a href="{{ url_for('delete_comment', comment_id=comment.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('确定删除评论？')">删除</a>
+                            {% endif %}
+                        </div>
+                        <div>{{ comment.content|replace('\n', '<br>')|safe }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>暂无评论，快来抢沙发吧！</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

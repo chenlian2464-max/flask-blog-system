@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>创建文章</h1>
+{% if is_create %}
+            <div style="margin: 10px 0;">
+                <button type="button" onclick="document.getElementById('category-form').style.display='block'">新增分类</button>
+                <div id="category-form" style="display: none; margin-top: 10px;">
+                    <form method="POST" action="{{ url_for('add_category') }}" style="display: inline;">
+                        <input type="text" name="category_name" placeholder="输入新分类名称" required>
+                        <button type="submit">创建</button>
+                    </form>
+                </div>
+            </div>
+{% endif %}
+<form method="POST" onsubmit="syncEditorContent()">
+    <div style="margin: 10px 0;">
+        <label>标题：</label>
+        <input type="text" name="title" value="{{ title }}" required style="width: 500px;">
+    </div>
+
+    <div style="margin: 10px 0;">
+        <label>分类：</label>
+        <select name="category">
+            <option value="">未分类</option>
+            {% for cate in categories %}
+            <option value="{{ cate.id }}">{{ cate.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <!-- 富文本编辑器（修复可输入问题） -->
+    <div style="margin: 10px 0;">
+        <label>内容：</label>
+        <!-- 工具栏（可选，方便格式化） -->
+        <div style="margin-bottom: 5px;">
+            <button type="button" onclick="formatDoc('bold')" style="padding: 2px 8px;">加粗</button>
+            <button type="button" onclick="formatDoc('italic')" style="padding: 2px 8px;">斜体</button>
+            <button type="button" onclick="formatDoc('insertUnorderedList')" style="padding: 2px 8px;">列表</button>
+            <button type="button" onclick="formatDoc('insertHorizontalRule')" style="padding: 2px 8px;">分隔线</button>
+        </div>
+        <!-- 编辑区域（强制开启可编辑） -->
+        <div id="editor" 
+             style="width: 800px; height: 300px; border:1px solid #ccc; padding:10px; min-height: 200px; overflow: auto;"
+             contenteditable="true"
+             spellcheck="true">
+            {{ content|safe }}
+        </div>
+        <!-- 隐藏的textarea，用于提交数据 -->
+        <textarea id="content" name="content" style="display:none;">{{ content }}</textarea>
+    </div>
+
+    <button type="submit" style="margin-top:10px;">发布</button>
+</form>
+
+<!-- 修复版JS：确保可输入 + 同步内容 -->
+<script>
+    // 初始化编辑器
+    const editor = document.getElementById('editor');
+    const contentInput = document.getElementById('content');
+
+    // 强制开启可编辑（核心修复）
+    editor.contentEditable = true;
+    editor.readOnly = false;
+    editor.tabIndex = 0; // 允许聚焦
+    editor.focus(); // 自动聚焦，方便输入
+
+    // 实时同步输入内容到textarea
+    editor.addEventListener('input', function() {
+        contentInput.value = editor.innerHTML;
+        console.log('输入内容：', editor.innerHTML); // 调试用，可删除
+    });
+
+    // 提交表单时强制同步（防止漏传）
+    function syncEditorContent() {
+        contentInput.value = editor.innerHTML;
+    }
+
+    // 格式化工具函数（可选，增强体验）
+    function formatDoc(cmd) {
+        document.execCommand(cmd, false, null);
+        editor.focus(); // 格式化后重新聚焦
+    }
+
+    // 兼容老浏览器的回车处理
+    editor.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault(); // 阻止默认回车（避免换行符异常）
+            document.execCommand('insertHTML', false, '<br><br>'); // 插入双换行，更易读
+        }
+    });
+</script>
+{% endblock %}
