@@ -4,13 +4,18 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from flask_bcrypt import Bcrypt
 from flask_paginate import Pagination, get_page_parameter
 from datetime import datetime
+import settings
+import os
 
-# 实例化应用,设计数据库连接
+# 确保实例文件夹存在
+if not os.path.exists('instance'):
+    os.mkdir('instance')
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db' 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# 密钥,用于flash消息
-app.config['SECRET_KEY'] = b'asdfghjkl'
+
+app.config.from_object(settings.DevelopmentConfig) # 开发环境配置
+# app.config.from_object(settings.ProductionConfig) # 生产环境配置
+
 # 分页设置
 app.config['POSTS_PER_PAGE'] = 3
 # 实例化数据库对象
@@ -80,8 +85,7 @@ def load_user(user_id):
 # -------------------------- 数据库初始化（调整为仅在首次运行/需要时执行） --------------------------
 def init_db():
     with app.app_context():
-        db.drop_all()  # 先删干净
-        db.create_all()  # 按模型定义顺序创建表
+        db.create_all() 
         # 添加默认分类
         if not Category.query.first():
             for name in ['技术笔记', '生活随笔', '学习总结']:
