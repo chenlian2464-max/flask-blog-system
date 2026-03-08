@@ -19,9 +19,9 @@
                 </div>
                 <!-- 内容摘要 -->
                 <p>{{ post.content|striptags|truncate(200) }}</p>
-                <a href="{{ url_for('post', post_id=post.id) }}" class="btn">查看全文</a>
+                <a href="{{ url_for('post', post_id=post.id) }}" class="btn btn-primary">查看全文</a>
                 {% if current_user == post.author %}
-                    <a href="{{ url_for('edit', post_id=post.id) }}" class="btn">编辑</a>
+                    <a href="{{ url_for('edit', post_id=post.id) }}" class="btn btn-primary">编辑</a>
                     <a href="{{ url_for('delete', post_id=post.id) }}" class="btn btn-danger" onclick="return confirm('确定要删除吗？')">删除</a>
                 {% endif %}
             </div>
@@ -29,36 +29,36 @@
         
         <!-- 分页控件 -->
         <!-- index.html 中分页控件部分，替换原有 {{ pagination.links }} -->
-<div class="pagination">
-    {% if pagination.pages > 1 %}
-        <!-- 上一页 -->
-        <a href="{{ url_for('index', page=pagination.prev_num, search=search_query) }}" 
-           {% if not pagination.has_prev %}style="pointer-events: none; opacity: 0.5;"{% endif %}>
-            上一页
-        </a>
-        
-        <!-- 页码 -->
-        {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=3) %}
-            {% if page_num %}
-                <a href="{{ url_for('index', page=page_num, search=search_query) }}" 
-                   class="{% if page_num == pagination.page %}active{% endif %}">
-                    {{ page_num }}
+        <div class="pagination">
+            {% if pagination.pages > 1 %}
+                <!-- 上一页 -->
+                <a href="{{ url_for('index', page=pagination.prev_num, search=search_query) }}" 
+                {% if not pagination.has_prev %}style="pointer-events: none; opacity: 0.5;"{% endif %}>
+                    上一页
                 </a>
-            {% else %}
-                <span>...</span>
+                
+                <!-- 页码 -->
+                {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=3) %}
+                    {% if page_num %}
+                        <a href="{{ url_for('index', page=page_num, search=search_query) }}" 
+                        class="{% if page_num == pagination.page %}active{% endif %}">
+                            {{ page_num }}
+                        </a>
+                    {% else %}
+                        <span>...</span>
+                    {% endif %}
+                {% endfor %}
+                
+                <!-- 下一页 -->
+                <a href="{{ url_for('index', page=pagination.next_num, search=search_query) }}" 
+                {% if not pagination.has_next %}style="pointer-events: none; opacity: 0.5;"{% endif %}>
+                    下一页
+                </a>
+                
+                <!-- 页码信息 -->
+                <span>第 {{ pagination.page }} 页 / 共 {{ pagination.pages }} 页（总计 {{ pagination.total }} 篇）</span>
             {% endif %}
-        {% endfor %}
-        
-        <!-- 下一页 -->
-        <a href="{{ url_for('index', page=pagination.next_num, search=search_query) }}" 
-           {% if not pagination.has_next %}style="pointer-events: none; opacity: 0.5;"{% endif %}>
-            下一页
-        </a>
-        
-        <!-- 页码信息 -->
-        <span>第 {{ pagination.page }} 页 / 共 {{ pagination.pages }} 页（总计 {{ pagination.total }} 篇）</span>
-    {% endif %}
-</div>
+        </div>
     {% else %}
         <p>暂无文章 {% if search_query %}匹配 "{{ search_query }}"{% endif %}，
            {% if current_user.is_authenticated %}

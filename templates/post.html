@@ -17,9 +17,9 @@
         
         <!-- 操作按钮 -->
         <div style="margin-top: 20px;">
-            <a href="{{ url_for('index') }}" class="btn">返回首页</a>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">返回首页</a>
             {% if current_user == post.author %}
-                <a href="{{ url_for('edit', post_id=post.id) }}" class="btn">编辑文章</a>
+                <a href="{{ url_for('edit', post_id=post.id) }}" class="btn btn-primary">编辑文章</a>
                 <a href="{{ url_for('delete', post_id=post.id) }}" class="btn btn-danger" onclick="return confirm('确定要删除吗？')">删除文章</a>
             {% endif %}
         </div>

@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>创建文章</h1>
+{% if not is_create %}
+<h2>编辑文章</h2>
+{% endif %}
 {% if is_create %}
+  <h2>创建文章</h2>
             <div style="margin: 10px 0;">
-                <button type="button" onclick="document.getElementById('category-form').style.display='block'">新增分类</button>
+                <button type="button" onclick="document.getElementById('category-form').style.display='block'">自定义分类</button>
                 <div id="category-form" style="display: none; margin-top: 10px;">
                     <form method="POST" action="{{ url_for('add_category') }}" style="display: inline;">
                         <input type="text" name="category_name" placeholder="输入新分类名称" required>
@@ -15,9 +18,8 @@
 <form method="POST" onsubmit="syncEditorContent()">
     <div style="margin: 10px 0;">
         <label>标题：</label>
-        <input type="text" name="title" value="{{ title }}" required style="width: 500px;">
+        <input type="text" name="title" value="{%if not is_create%}{{ post.title }}{%endif%}" required style="width: 500px;">
     </div>
-
     <div style="margin: 10px 0;">
         <label>分类：</label>
         <select name="category">
@@ -32,23 +34,23 @@
         <label>内容：</label>
         <!-- 工具栏（可选，方便格式化） -->
         <div style="margin-bottom: 5px;">
-            <button type="button" onclick="formatDoc('bold')" style="padding: 2px 8px;">加粗</button>
-            <button type="button" onclick="formatDoc('italic')" style="padding: 2px 8px;">斜体</button>
-            <button type="button" onclick="formatDoc('insertUnorderedList')" style="padding: 2px 8px;">列表</button>
-            <button type="button" onclick="formatDoc('insertHorizontalRule')" style="padding: 2px 8px;">分隔线</button>
+            <button class="btn btn-primary" type="button" onclick="formatDoc('bold')" style="padding: 2px 8px;">加粗</button>
+            <button class="btn btn-primary" type="button" onclick="formatDoc('italic')" style="padding: 2px 8px;">斜体</button>
+            <button class="btn btn-primary" type="button" onclick="formatDoc('insertUnorderedList')" style="padding: 2px 8px;">列表</button>
+            <button class="btn btn-primary" type="button" onclick="formatDoc('insertHorizontalRule')" style="padding: 2px 8px;">分隔线</button>
         </div>
         <!-- 编辑区域（强制开启可编辑） -->
         <div id="editor" 
              style="width: 800px; height: 300px; border:1px solid #ccc; padding:10px; min-height: 200px; overflow: auto;"
              contenteditable="true"
              spellcheck="true">
-            {{ content|safe }}
+            {%if not is_create%}{{ post.content | safe }}{%endif%}
         </div>
         <!-- 隐藏的textarea，用于提交数据 -->
         <textarea id="content" name="content" style="display:none;">{{ content }}</textarea>
     </div>
 
-    <button type="submit" style="margin-top:10px;">发布</button>
+    <button type="submit" style="margin-top:10px;" class ="btn btn-primary">发布</button>
 </form>
 
 <!-- 修复版JS：确保可输入 + 同步内容 -->
