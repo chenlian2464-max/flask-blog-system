@@ -1,63 +1,23 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, abort
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
-from flask_paginate import Pagination, get_page_parameter
-from datetime import datetime
+from flask_paginate import  get_page_parameter
+import markdown
 import settings
 import os
+from models import db, User, Post, Category, Comment
 
-# 确保实例文件夹存在
-if not os.path.exists('instance'):
+if not os.path.exists('instance'):                  # instance文件夹
     os.mkdir('instance')
-
-app = Flask(__name__)
-
-app.config.from_object(settings.DevelopmentConfig) # 开发环境配置
+app = Flask(__name__,instance_relative_config=True) # 实例化Flask对象
+app.config.from_object(settings.DevelopmentConfig)  # 开发环境配置
 # app.config.from_object(settings.ProductionConfig) # 生产环境配置
-
-# 分页设置
-app.config['POSTS_PRE_PAGE'] = 3
-# 实例化数据库对象
-db = SQLAlchemy(app)
-# 实例化bcrypt对象
-bcrypt = Bcrypt(app)
-# 登录管理器
-login_manager = LoginManager(app)
-login_manager.init_app(app) # 初始化登录管理器
-login_manager.login_view = "login" # 设置登录视图函数名(未登录时跳转到该视图)
-
-"""数据库模型定义"""
-# 1.用户模型
-class User(UserMixin,db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(60), nullable=False)
-# 2.分类模型
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True, nullable=False)
-# 3.文章模型
-class Post(db.Model):
-    id = db.Column(db.Integer,primary_key = True)                # 文章id
-    title = db.Column(db.String(100),nullable = False)           # 文章标题
-    content = db.Column(db.Text,nullable = False)                # 文章内容
-    created_at = db.Column(db.DateTime,default = datetime.utcnow)# 创建时间
-    updated_at = db.Column(db.DateTime,default = datetime.utcnow,updated_at = datetime.utcnow)# 更新时间
-    # 关联用户
-    user_id = db.Column(db.Integer,nullable = False)
-    # 关联分类
-    category_id = db.Column(db.Integer,nullable = False)
-# 4.评论模型
-class Comment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    # 关联用户
-    user_id = db.Column(db.Integer,nullable = False)
-    # 关联文章
-    post_id = db.Column(db.Integer,nullable = False)
+app.config['POSTS_PRE_PAGE'] = 3                    # 分页设置
+db.init_app(app)                                    # 初始化数据库      
+bcrypt = Bcrypt(app)                                # 初始化bcrypt加密
+login_manager = LoginManager(app)                   # 初始化登录管理器
+login_manager.init_app(app)                         # 初始化登录管理器
+login_manager.login_view = "login"                  # 设置登录视图函数名(未登录时跳转到该视图)
 
 # -------------------------- 手动关联函数（替代外键关联） --------------------------
 # 获取文章作者
@@ -91,7 +51,6 @@ def init_db():
             for name in ['技术笔记', '生活随笔', '学习总结']:
                 db.session.add(Category(name=name))
             db.session.commit()
-    print("数据库初始化完成！")
 
 
 
@@ -109,7 +68,7 @@ def index():
     post_query = Post.query.order_by(Post.created_at.desc()) # 查询Post模型（文章表）的所有数据，按创建时间倒序排列，最新的放前面
     if search_query:
         post_query = post_query.filter(
-            post_query.title.contanins() | post_query.content.contains(search_query)
+            Post.title.contains(search_query) | Post.content.contains(search_query)
         )
     # 构建分页对象
     pagination = post_query.paginate(
@@ -239,6 +198,15 @@ def post(post_id):
     # 手动补充作者和分类（可优化）
     post.author = get_post_author(post)
     post.category = get_post_category(post)
+    # 将Markdown内容转换为HTML
+    post.content_html = markdown.markdown(
+        post.content,
+        extensions = [
+           'markdown.extensions.extra',      
+           'markdown.extensions.codehilite', # 语法高亮
+           'markdown.extensions.toc'         # 自动生成目录
+        ]
+    )
     # 处理评论
     if request.method == 'POST' and current_user.is_authenticated:
         content = request.form.get('comment','').strip()
@@ -280,8 +248,11 @@ def create():
     # 验证文章标题和内容是否为空
         if not title or not content:
             flash("标题或内容不能为空","error")  # 回显已填数据
-            return render_template("edit.html", is_create=True, categories=categories, 
-                           title=title, content=content, category_id=category_id)
+            return render_template("edit.html", is_create=True, categories=categories)
+    # 验证分类是否存在
+        if category_id and not Category.query.get(category_id):
+            flash("分类不存在！","error")
+            return render_template("edit.html", is_create=True, categories=categories)
     # 保存文章到数据库
         new_post = Post(
             title = title,
@@ -313,19 +284,13 @@ def edit(post_id):
         title =request.form.get("title").strip()
         content = request.form.get("content").strip()
         category_id = int(request.form.get("category")) if request.form.get("category") else None
-
-
-
-
         if not title or not content:
             flash("标题或内容不能为空","error") 
             return render_template("edit.html",post = post,is_create = False,categories = categories)
-        
         # 更新文章
         post.title = title
         post.content = content
         post.category_id = category_id
-
         try:
             db.session.commit()
             flash("文章更新成功","success")
@@ -402,6 +367,7 @@ def add_category():
 
 """评论互动模块（内容互动）"""
 # 删除评论
+
 if __name__ == '__main__':
     init_db()
     app.run(debug = True,port = 5001,use_reloader = False)

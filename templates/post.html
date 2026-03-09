@@ -12,9 +12,8 @@
             {% if post.category %}分类：{{ post.category.name }}{% else %}无分类{% endif %}
         </div>
         <div class="post-content">
-            {{ post.content|safe }}
+            {{ post.content_html | safe }}
         </div>
-        
         <!-- 操作按钮 -->
         <div style="margin-top: 20px;">
             <a href="{{ url_for('index') }}" class="btn btn-primary">返回首页</a>
