@@ -16,10 +16,10 @@
         </div>
         <!-- 操作按钮 -->
         <div style="margin-top: 20px;">
-            <a href="{{ url_for('index') }}" class="btn btn-primary">返回首页</a>
+            <a href="{{ url_for('blog.index') }}" class="btn btn-primary">返回首页</a>
             {% if current_user == post.author %}
-                <a href="{{ url_for('edit', post_id=post.id) }}" class="btn btn-primary">编辑文章</a>
-                <a href="{{ url_for('delete', post_id=post.id) }}" class="btn btn-danger" onclick="return confirm('确定要删除吗？')">删除文章</a>
+                <a href="{{ url_for('blog.edit', post_id=post.id) }}" class="btn btn-primary">编辑文章</a>
+                <a href="{{ url_for('blog.delete', post_id=post.id) }}" class="btn btn-danger" onclick="return confirm('确定要删除吗？')">删除文章</a>
             {% endif %}
         </div>
         
@@ -35,7 +35,7 @@
                     <button type="submit">提交评论</button>
                 </form>
             {% else %}
-                <p>请<a href="{{ url_for('login') }}">登录</a>后发表评论</p>
+                <p>请<a href="{{ url_for('auth.login') }}">登录</a>后发表评论</p>
             {% endif %}
             
             <!-- 显示所有评论 -->
@@ -45,7 +45,7 @@
                         <div class="comment-meta">
                             {{ comment.author.username }} · {{ comment.created_at.strftime('%Y-%m-%d %H:%M') }}
                             {% if current_user == comment.author or current_user == post.author %}
-                                <a href="{{ url_for('delete_comment', comment_id=comment.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('确定删除评论？')">删除</a>
+                                <a href="{{ url_for('blog.delete_comment', comment_id=comment.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('确定删除评论？')">删除</a>
                             {% endif %}
                         </div>
                         <div>{{ comment.content|replace('\n', '<br>')|safe }}</div>

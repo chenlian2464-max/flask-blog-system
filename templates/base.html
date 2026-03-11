@@ -211,7 +211,8 @@
         /* 右侧内容区 */
         .content-area {
             /* 方案1：固定宽度（适合固定布局） */
-            width: 1200px; 
+            width: 1200px;
+            height: 666px;
             /* 方案2：最大宽度 + 自动居中（更灵活，推荐） */
             /* max-width: 1200px;
             width: calc(100% - 60px); /* 折叠时占满剩余宽度 */
@@ -362,6 +363,275 @@
             transform: translateY(-2px);
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
+
+
+        /* 登录卡片 */
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            transition: all 0.3s ease;
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(31, 38, 135, 0.3);
+        }
+
+        /* 标题样式 */
+        .card-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .card-header h3 {
+            color: #4a5568;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .card-header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        /* 输入框样式 */
+        .form-floating {
+            margin-bottom: 18px;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            outline: none;
+        }
+
+        .form-floating label {
+            color: #a0aec0;
+        }
+
+        /* 按钮样式 */
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 0;
+            font-weight: 500;
+            font-size: 16px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+
+        /* 提示信息样式 */
+        .alert {
+            border-radius: 10px;
+            border: none;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            height: auto;
+        }
+
+        .alert-danger {
+            background-color: #fef2f2;
+            color: #dc2626;
+        }
+
+        .alert-success {
+            background-color: #f0fdf4;
+            color: #059669;
+        }
+
+        /* 底部链接 */
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .login-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .login-footer a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        /* 图标样式 */
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
+
+
+        /* 注册卡片 */
+        .register-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            transition: all 0.3s ease;
+        }
+
+        .register-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(31, 38, 135, 0.3);
+        }
+
+        /* 标题样式 */
+        .card-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .card-header h3 {
+            color: #4a5568;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .card-header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        /* 输入框样式 */
+        .form-floating {
+            margin-bottom: 18px;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            outline: none;
+        }
+
+        .form-floating label {
+            color: #a0aec0;
+        }
+
+        /* 按钮样式 */
+        .btn-register {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 0;
+            font-weight: 500;
+            font-size: 16px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+
+        /* 提示信息样式 */
+        .alert {
+            border-radius: 10px;
+            border: none;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+        }
+
+        .alert-danger {
+            background-color: #fef2f2;
+            color: #dc2626;
+        }
+
+        .alert-success {
+            background-color: #f0fdf4;
+            color: #059669;
+        }
+
+        /* 底部链接 */
+        .register-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .register-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .register-footer a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        /* 图标样式 */
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
+
+        /* 密码强度提示（可选） */
+        .password-hint {
+            font-size: 12px;
+            color: #718096;
+            margin-top: -10px;
+            margin-bottom: 18px;
+            padding-left: 15px;
+        }
     </style>
 </head>
 <body>
@@ -369,20 +639,23 @@
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <a href="{{ url_for('index') }}" class="logo">我的博客</a>
+                <a href="{{ url_for('blog.index') }}" class="logo">我的博客</a>
                 <nav class="nav-links navbar-menu">
-                    <a href="{{ url_for('index') }}">首页</a>
+                    <a href="{{ url_for('blog.index') }}">首页</a>
                     {% if current_user.is_authenticated %}
-                        <a href="{{ url_for('create') }}">文章</a>
-                        <a href="{{ url_for('logout') }}">登出 [{{ current_user.username }}]</a>
+                        <a href="{{ url_for('blog.create') }}">文章</a>
+                        <a href="{{ url_for('auth.logout') }}">登出 [{{ current_user.username }}]</a>
+                        {% if current_user.is_admin %}
+                            <a href="{{ url_for('admin.dashboard') }}">管理员后台</a>
+                        {% endif %}
                     {% else %}
-                        <a href="{{ url_for('login') }}">登录</a>
-                        <a href="{{ url_for('register') }}">注册</a>
+                        <a href="{{ url_for('auth.login') }}">登录</a>
+                        <a href="{{ url_for('auth.register') }}">注册</a>
                     {% endif %}
                 </nav>
             </div>
             <div class="search-box">
-                <form class="search-form" action="{{ url_for('index') }}" method="get">
+                <form class="search-form" action="{{ url_for('blog.index') }}" method="get">
                     <input type="text" name="search" class="search-input" placeholder="搜索文章标题/内容..." value="{{ search_query or '' }}">
                 <button type="submit" class="search-btn">搜索</button>
                 </form>
@@ -400,29 +673,18 @@
                 <div class="username">{{ current_user.username }}</div>
                 <div class="user-desc">欢迎回来！</div>
             </div>
-            <!-- <div class="category-list">
-                <i class="fas fa-folder"></i>
-                <span>分类管理</span>
-            </div> -->
             {% endif %}
-
-            <!-- {%if categories %}
-            <div class="sidebar-section">
-                <h3 class="sidebar-title">文章分类</h3>
-                <div class="category-list">
-                    {% for category in categories %}
-                        <a href="#">{{ category.name }}</a>
-                    {% endfor %}
-                </div>
-            </div>
-            {%endif%} -->
         </aside>
 
-        <!-- 提示消息 -->
+        <!-- 提示信息 -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                {% for category, message in messages %}
-                    <div class="flash {{ category }}">{{ message }}</div>
+                {% for category, msg in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        <i class="fa fa-{% if category == 'success' %}check-circle{% else %}exclamation-circle{% endif %} me-2"></i>
+                        {{ msg }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}

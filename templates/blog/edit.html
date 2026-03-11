@@ -6,7 +6,7 @@
         <div style="margin: 10px 0;">
             <button type="button" onclick="document.getElementById('category-form').style.display='block'">自定义分类</button>
             <div id="category-form" style="display: none; margin-top: 10px;">
-                <form method="POST" action="{{ url_for('add_category') }}" style="display: inline;">
+                <form method="POST" action="{{ url_for('admin.add_category') }}" style="display: inline;">
                     <input type="text" name="category_name" placeholder="输入新分类名称" required>
                     <button type="submit">创建</button>
                 </form>
@@ -16,7 +16,7 @@
 
 {%if is_create%}<h2>创建文章</h2>{%else%}<h2>编辑文章</h2>{%endif%}
 <div class="edit-container" style="max-width: 1000px; margin: 0 auto; padding: 20px;"></div>
-    <form method="POST" action="{{ url_for('create') if is_create else url_for('edit',post_id=post.id) }}">
+    <form method="POST" action="{{ url_for('blog.create') if is_create else url_for('blog.edit',post_id=post.id) }}">
         <!-- 标题： -->
         <div style="margin: 10px 0;">
             <label>标题：</label>

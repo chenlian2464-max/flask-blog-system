@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>管理员登录</title>
+</head>
+<body>
+    <div style="width: 400px; margin: 100px auto;">
+        <h2>博客后台登录</h2>
+        <!-- 提示消息 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, msg in messages %}
+                    <div style="color:red ">{{ msg }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- 登录表单 -->
+        <form method="POST" style="margin-top: 20px;">
+            <div style="margin-bottom: 10px;">
+                <label>账号：</label>
+                <input type="text" name="username" required style="width: 200px;">
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label>密码：</label>
+                <input type="password" name="password" required style="width: 200px;">
+            </div>
+            <div style="margin-bottom: 10px;">
+                <input type="checkbox" name="remember"> 记住我
+            </div>
+            <button type="submit">登录</button>
+        </form>
+    </div>
+</body>
+</html>

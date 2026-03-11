@@ -1,0 +1,44 @@
+{% extends 'base.html' %}  <!-- 继承基础模板（建议统一页面布局） -->
+
+{% block title %}管理员后台 - 仪表盘{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard" style="max-width: 1000px; margin: 20px auto; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+    <!-- 头部信息 -->
+    <div class="admin-header" style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #dee2e6;">
+        <h2 style="color: #212529; margin: 0;">管理员后台</h2>
+        <p style="color: #6c757d; margin: 10px 0 0 0;">
+            欢迎您，<span style="color: #0d6efd;">{{ current_user.username }}</span>（管理员）
+        </p>
+        <a href="{{ url_for('auth.logout') }}" style="color: #dc3545; text-decoration: none; font-size: 14px;">
+            退出登录
+        </a>
+    </div>
+
+    <!-- 数据统计卡片 -->
+    <div class="stats-cards" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;">
+        <div class="card" style="padding: 20px; background: white; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <h4 style="color: #0d6efd; margin: 0 0 10px 0;">文章总数</h4>
+            <p style="font-size: 24px; font-weight: bold; color: #212529; margin: 0;">{{ total_posts }}</p>
+        </div>
+        <div class="card" style="padding: 20px; background: white; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <h4 style="color: #198754; margin: 0 0 10px 0;">用户总数</h4>
+            <p style="font-size: 24px; font-weight: bold; color: #212529; margin: 0;">{{ total_users }}</p>
+        </div>
+        <div class="card" style="padding: 20px; background: white; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <h4 style="color: #ffc107; margin: 0 0 10px 0;">分类总数</h4>
+            <p style="font-size: 24px; font-weight: bold; color: #212529; margin: 0;">{{ total_categories }}</p>
+        </div>
+    </div>
+
+    <!-- 核心操作入口 -->
+    <div class="admin-actions" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+        <a href="{{ url_for('blog.create') }}" style="padding: 15px; background: #0d6efd; color: white; text-align: center; border-radius: 6px; text-decoration: none;">
+            发布新文章 / 添加分类
+        </a>
+        <a href="{{ url_for('admin.category_list') }}" style="padding: 15px; background: #dc3545; color: white; text-align: center; border-radius: 6px; text-decoration: none; cursor: pointer;">
+            分类管理
+        </a>
+    </div>
+</div>
+{% endblock %}

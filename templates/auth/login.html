@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>登录</h1>
+     <div class="login-card">
+        <!-- 卡片头部 -->
+        <div class="card-header">
+            <p>欢迎回来，请输入您的账号信息</p>
+        </div>
+
+        <!-- 登录表单 -->
+        <form method="POST">
+            <div class="form-floating input-icon">
+                <input type="email" class="form-control" id="email" name="email" value="{{ email }}" placeholder="邮箱" required>
+                <label for="email"><i class="fa fa-user me-2"></i>邮箱</label>
+                <i class="fa fa-user"></i>
+            </div>
+
+            <div class="form-floating input-icon">
+                <input type="password" class="form-control" id="password" name="password" placeholder="密码" required minlength="6" maxlength="20">
+                <label for="password"><i class="fa fa-lock me-2"></i>密码</label>
+                <i class="fa fa-lock"></i>
+            </div>
+
+            <button type="submit" class="btn btn-login w-100">
+                <i class="fa fa-sign-in me-2"></i>登 录
+            </button>
+        </form>
+
+        <!-- 底部链接 -->
+        <div class="login-footer">
+            <p>还没有账号？ <a href="{{ url_for('auth.register') }}">立即注册</a></p>
+            <p><a href="{{ url_for('blog.index') }}">返回博客首页</a></p>
+        </div>
+    </div>
+{% endblock %}

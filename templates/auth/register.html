@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>注册</h1>
+   
+     <div class="register-card">
+        <!-- 卡片头部 -->
+        <div class="card-header">
+            <p>创建您的博客账号，开始创作之旅</p>
+        </div>
+
+        <!-- 注册表单 -->
+        <form method="POST">
+            <div class="form-floating input-icon">
+                <input type="text" class="form-control" id="username" name="username" value="{{ username }}" placeholder="用户名" required>
+                <label for="username"><i class="fa fa-user me-2"></i>用户名</label>
+                <i class="fa fa-user"></i>
+            </div>
+
+            <div class="form-floating input-icon">
+                <input type="email" class="form-control" id="email" name="email" value="{{ email }}"  placeholder="邮箱" required>
+                <label for="password"><i class="fa fa-lock me-2"></i>邮箱</label>
+                <i class="fa fa-lock"></i>
+            </div>
+
+            <div class="form-floating input-icon">
+                <input type="password" class="form-control" id="password" name="password"  placeholder="密码" required minlength="6" maxlength="20">
+                <label for="password"><i class="fa fa-lock me-2"></i>密码</label>
+                <i class="fa fa-lock"></i>
+            </div>
+            <div class="password-hint">
+                <i class="fa fa-info-circle me-1"></i>密码长度需为 6-20 位，建议包含字母和数字
+            </div>
+
+            <div class="form-floating input-icon">
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="确认密码" required minlength="6" maxlength="20">
+                <label for="confirm_password"><i class="fa fa-lock me-2"></i>确认密码</label>
+                <i class="fa fa-lock"></i>
+            </div>
+
+            <button type="submit" class="btn btn-register w-100">
+                <i class="fa fa-paper-plane me-2"></i>注 册
+            </button>
+        </form>
+
+        <!-- 底部链接 -->
+        <div class="register-footer">
+            <p>已有账号？ <a href="{{ url_for('auth.login') }}">立即登录</a></p>
+            <p><a href="{{ url_for('blog.index') }}">返回博客首页</a></p>
+        </div>
+    </div>
+
+{% endblock %}
